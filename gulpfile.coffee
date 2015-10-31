@@ -18,19 +18,19 @@ $ = require('gulp-load-plugins')()
 config =
   jade:
     source: './src/jade'
-    watch: 'src/jade/**/*.jade'
+    watch: 'src/jade/*.jade'
     destination: './public'
     config:
       pretty: true
   coffee:
     source: './src/coffee'
-    watch: 'src/coffee/**/*.coffee'
+    watch: 'src/coffee/*.coffee'
     destination: './public/js'
     option:
       bare: true
   sass:
     source: './src/sass'
-    watch: './src/sass/**/*.sass'
+    watch: './src/sass/*.sass'
     destination: './public/css'
 # error handle
 handleError = (err) ->
