@@ -1,5 +1,6 @@
 gulp = require 'gulp'
 gutil = require 'gulp-util'
+stylus = require 'gulp-stylus'
 koutoSwiss = require 'kouto-swiss'
 autoprefixer = require 'gulp-autoprefixer'
 
@@ -28,9 +29,9 @@ config =
     destination: './public/js'
     option:
       bare: true
-  sass:
-    source: './src/sass'
-    watch: './src/sass/*.sass'
+  stylus:
+    source: './src/stylus'
+    watch: 'src/stylus/**/*.styl'
     destination: './public/css'
 # error handle
 handleError = (err) ->
@@ -57,24 +58,25 @@ gulp.task 'coffee', ->
     .on 'error', handleError
     .pipe gulp.dest config.coffee.destination
 
-# tasks sass
-gulp.task "sass", ->
+# tasks stylus
+gulp.task "stylus", ->
   gulp
-  .src config.sass.watch
-  .pipe $.sourcemaps.init()
-  .pipe $.sass
-    compress: true
-  .pipe $.autoprefixer
-    browsers: ['last 2 versions']
-  .pipe $.sourcemaps.write('.')
-  .on 'error', handleError
-  .pipe gulp.dest config.sass.destination
+    .src config.stylus.watch
+    .pipe $.sourcemaps.init()
+    .pipe stylus
+      compress: true
+      use: koutoSwiss()
+    .pipe autoprefixer
+      browsers: ['last 2 versions']
+    .pipe $.sourcemaps.write('.')
+    .on 'error', handleError
+    .pipe gulp.dest config.stylus.destination
 
 # watch
 gulp.task 'watch', ->
   gulp.watch config.coffee.watch, ['coffee']
   gulp.watch config.jade.watch, ['jade']
-  gulp.watch config.sass.watch, ['sass']
+  gulp.watch config.stylus.watch, ['stylus']
 
 #load
-gulp.task 'default', ["coffee", "jade", "sass"]
+gulp.task 'default', ["coffee", "jade", "stylus"]
